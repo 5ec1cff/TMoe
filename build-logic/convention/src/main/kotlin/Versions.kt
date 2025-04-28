@@ -12,7 +12,7 @@ object Versions {
     const val versionName = "1.0"
 
     private const val defaultNdkVersion = "27.2.12479018"
-    private const val defaultCMakeVersion = "3.31.1"
+    private const val defaultCMakeVersion = "3.22.1"
 
     fun getNdkVersion(project: Project): String {
         val prop = getLocalProperty(project, "tmoe.override.ndk.version")
