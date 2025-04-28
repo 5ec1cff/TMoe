@@ -89,10 +89,10 @@ android {
                 enableV2Signing = true
             }
         }
-        buildTypes {
-            release {
-                signingConfig = signingConfigs.findByName("release")
-            }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs["debug"]
         }
     }
 }
