@@ -27,7 +27,8 @@ public class ShowMsgId extends CommonDynamicHook {
         currentTimeString.setAccessible(true);
         Field messageOwner = Initiator.loadClass("org.telegram.messenger.MessageObject").getDeclaredField("messageOwner");
         messageOwner.setAccessible(true);
-        Field msgId = Initiator.loadClass("org.telegram.tgnet.TLRPC$Message").getDeclaredField("id");
+        Class<?> TLRPC_message = Initiator.loadClass("org.telegram.tgnet.TLRPC$Message");
+        Field msgId = TLRPC_message.getDeclaredField("id");
         msgId.setAccessible(true);
         Class<?> kTheme = Initiator.loadClass("org.telegram.ui.ActionBar.Theme");
         Field chatTimePaint = kTheme.getDeclaredField("chat_timePaint");
@@ -36,12 +37,22 @@ public class ShowMsgId extends CommonDynamicHook {
         timeTextWidth.setAccessible(true);
         Field timeWidth = kChatMessageCell.getDeclaredField("timeWidth");
         timeWidth.setAccessible(true);
+
+        Field currentMessageObject = kChatMessageCell.getDeclaredField("currentMessageObject");
+        currentMessageObject.setAccessible(true);
+        Field post_author = TLRPC_message.getDeclaredField("post_author");
+        post_author.setAccessible(true);
+
         HookUtils.hookAfterIfEnabled(this, measureTime, param -> {
             CharSequence time = (CharSequence) currentTimeString.get(param.thisObject);
             Object messageObject = param.args[0];
             Object owner = messageOwner.get(messageObject);
             int id = msgId.getInt(owner);
             String delta = id + " ";
+            String postAuthor = (String) post_author.get(owner);
+            if (postAuthor != null) {
+                delta += postAuthor + " ";
+            }
             time = delta + time;
             currentTimeString.set(param.thisObject, time);
             TextPaint paint = (TextPaint) chatTimePaint.get(null);
