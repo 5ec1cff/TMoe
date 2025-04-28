@@ -309,17 +309,32 @@ object HistoricalNewsOption : CommonDynamicHook() {
             }
 
             //            forwardMessages(messages, false, false, true, 0)
-            getMethodAndInvoke(
-                "forwardMessages",
-                chatActivity,
-                false,
-                5,
-                messages,
-                false,
-                false,
-                true,
-                0
-            )
+            try {
+                getMethodAndInvoke(
+                    "forwardMessages",
+                    chatActivity,
+                    false,
+                    6,
+                    messages,
+                    false,
+                    false,
+                    true,
+                    0,
+                    0L,
+                )
+            } catch (_: NoSuchMethodException) {
+                getMethodAndInvoke(
+                    "forwardMessages",
+                    chatActivity,
+                    false,
+                    5,
+                    messages,
+                    false,
+                    false,
+                    true,
+                    0,
+                )
+            }
 
         }
 
