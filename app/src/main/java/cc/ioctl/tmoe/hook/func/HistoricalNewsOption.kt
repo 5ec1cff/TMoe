@@ -107,13 +107,14 @@ object HistoricalNewsOption : CommonDynamicHook() {
                             }
 
 
-                          Toast.makeText(ctx, "ID: $id", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ctx, "ID: $id", Toast.LENGTH_SHORT).show()
 
-                          val context =  AndroidAppHelper.currentApplication().applicationContext
+                            val context = AndroidAppHelper.currentApplication().applicationContext
 
                             val item = ClipData.Item(id.toString())
                             val clipData = ClipData("", arrayOf("text/plain"), item)
-                            val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                            val clipboardManager =
+                                context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                             clipboardManager!!.setPrimaryClip(clipData)
 
 //                        Toast.makeText(AndroidAppHelper.currentApplication().applicationContext,"查看用户历史消息 $channel_id $post_author  $chat_id $user_id", Toast.LENGTH_SHORT).show()
@@ -374,6 +375,7 @@ object HistoricalNewsOption : CommonDynamicHook() {
                     )
 
                 }
+
                 chat_id.toInt() != 0 -> {
                     val chat =
                         getMethodAndInvoke("getChat", getMessagesController, true, 1, chat_id)!!
@@ -383,6 +385,7 @@ object HistoricalNewsOption : CommonDynamicHook() {
                         args = arrayOf(null, chat)
                     )
                 }
+
                 channel_id.toInt() != 0 -> {
                     val chat =
                         getMethodAndInvoke("getChat", getMessagesController, true, 1, channel_id)!!
