@@ -43,9 +43,16 @@ object HistoricalNewsOption : CommonDynamicHook() {
             //LocaleController.getString("ReportChat", R.string.ReportChat);
             val reportChat =
                 findField("org.telegram.messenger.R\$string") { name == "ReportChat" }.get(null) as Int
-            val reportChatText = findMethod("org.telegram.messenger.LocaleController") {
+            val getString = findMethod("org.telegram.messenger.LocaleController") {
                 name == "getString" && parameterTypes.size == 2
-            }.invoke(null, "ReportChat", reportChat) as String
+            }
+            val reportChatText = getString.invoke(null, "ReportChat", reportChat) as String
+
+            val edit = findField("org.telegram.messenger.R\$string") { name == "Edit" }.get(null) as Int
+            val editText = getString.invoke(null, "Edit", edit) as String
+
+            val delete = findField("org.telegram.messenger.R\$string") { name == "Delete" }.get(null) as Int
+            val deleteText = getString.invoke(null, "Delete", edit) as String
 
             val callC =
                 findConstructor("org.telegram.ui.ActionBar.ActionBarMenuSubItem") { parameterTypes.size == 4 }
@@ -65,8 +72,9 @@ object HistoricalNewsOption : CommonDynamicHook() {
 
                     val thisObject = it.thisObject
 
-                    if (texts.text == reportChatText) {
-                        it.result = null
+                    if (texts.text == reportChatText || texts.text == editText || texts.text == deleteText) {
+                        // it.result = null
+                        isCreateMenu = false
 
                         // ActionBarMenuSubItem cell = new ActionBarMenuSubItem(getParentActivity(), true, true, themeDelegate);
                         val ctx = (thisObject as ViewGroup).context
