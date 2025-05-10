@@ -37,7 +37,7 @@
     <string name="AddInfoContainer">允许查询</string>
     <string name="AddInfoContainerD">非管理员也可查看一些信息</string>
     <string name="SendCommand">点击自动发送 Bot 指令前确认</string>
-    <string name="ShowMsgId">显示消息 ID</string>
+    <string name="ShowMsgId">显示消息 ID ，并显示当前群组的管理头衔</string>
     <string name="RestartClient">重启 Telegram</string>
     <string name="ReloadMessage">重新加载消息</string>
     <string name="LostMsgMitigation">针对丢消息的辅助手段</string>
