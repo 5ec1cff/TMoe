@@ -21,11 +21,12 @@ public class ShowMsgId extends CommonDynamicHook {
     @Override
     public boolean initOnce() throws Exception {
         Class<?> kChatMessageCell = Initiator.loadClass("org.telegram.ui.Cells.ChatMessageCell");
+        Class<?> kMessageObject = Initiator.loadClass("org.telegram.messenger.MessageObject");
         Method measureTime = kChatMessageCell.getDeclaredMethod("measureTime",
-                Initiator.loadClass("org.telegram.messenger.MessageObject"));
+                kMessageObject);
         Field currentTimeString = kChatMessageCell.getDeclaredField("currentTimeString");
         currentTimeString.setAccessible(true);
-        Field messageOwner = Initiator.loadClass("org.telegram.messenger.MessageObject").getDeclaredField("messageOwner");
+        Field messageOwner = kMessageObject.getDeclaredField("messageOwner");
         messageOwner.setAccessible(true);
         Class<?> TLRPC_message = Initiator.loadClass("org.telegram.tgnet.TLRPC$Message");
         Field msgId = TLRPC_message.getDeclaredField("id");
@@ -42,6 +43,12 @@ public class ShowMsgId extends CommonDynamicHook {
         currentMessageObject.setAccessible(true);
         Field post_author = TLRPC_message.getDeclaredField("post_author");
         post_author.setAccessible(true);
+        Field is_mega_group = kChatMessageCell.getDeclaredField("isMegagroup");
+        is_mega_group.setAccessible(true);
+        Method getFromChatIdMethod = kMessageObject.getDeclaredMethod("getFromChatId");
+        getFromChatIdMethod.setAccessible(true);
+        Method getDialogIdMethod = kMessageObject.getDeclaredMethod("getDialogId");
+        getDialogIdMethod.setAccessible(true);
 
         HookUtils.hookAfterIfEnabled(this, measureTime, param -> {
             CharSequence time = (CharSequence) currentTimeString.get(param.thisObject);
@@ -49,9 +56,12 @@ public class ShowMsgId extends CommonDynamicHook {
             Object owner = messageOwner.get(messageObject);
             int id = msgId.getInt(owner);
             String delta = id + " ";
-            String postAuthor = (String) post_author.get(owner);
-            if (postAuthor != null) {
-                delta += postAuthor + " ";
+            boolean isMegaGroup = (boolean) is_mega_group.get(param.thisObject);
+            long fromChatId = (long) getFromChatIdMethod.invoke(messageObject);
+            long dialogId = (long) getDialogIdMethod.invoke(messageObject);
+            if (isMegaGroup && fromChatId == dialogId) {
+                String postAuthor = (String) post_author.get(owner);
+                if (postAuthor != null) delta += postAuthor.replace("\n", "") + " ";
             }
             time = delta + time;
             currentTimeString.set(param.thisObject, time);

@@ -44,7 +44,7 @@
     <string name="VersionInfo">Version</string>
     <string name="TextCopied">Text copied to clipboard.</string>
     <string name="HideSponsoredMsg">Hide sponsored message</string>
-    <string name="ShowMsgId">Show message ID</string>
+    <string name="ShowMsgId">Show message ID, and admin title of current group</string>
     <string name="ReloadMessage">Reload Message</string>
     <string name="RestartClient">Restart Telegram</string>
     <string name="LostMsgMitigation">If you have lost messages</string>
