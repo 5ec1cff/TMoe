@@ -135,6 +135,10 @@ class SettingsFragment : BaseHierarchyFragment() {
                 ShowIdInProfile, "ShowIdInProfile", R.string.ShowIdInProfile,
                 "ShowIdInProfileDesc", R.string.ShowIdInProfileDesc
             )
+            functionSwitch(
+                ShowDCInProfile, "ShowDCInProfile", R.string.ShowDCInProfile,
+                "ShowIdInProfileDesc", R.string.ShowDCInProfileDesc
+            )
         }
         category("LostMsgMitigation", R.string.LostMsgMitigation) {
             functionSwitch(
