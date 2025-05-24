@@ -11,6 +11,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -114,6 +116,10 @@ public class ProfileActivityRowHook implements Initializable {
         boolean onItemClicked(@NonNull String key, @NonNull Object adapter, @NonNull Object profileActivity);
 
         void onInsertRow(@NonNull RowManipulator manipulator, @NonNull Object profileActivity);
+
+        default int getPriority() {
+            return 0;
+        }
     }
 
     private static final List<Callback> sCallbacks = new ArrayList<>();
@@ -400,5 +406,6 @@ public class ProfileActivityRowHook implements Initializable {
 
     public static void addCallback(Callback callback) {
         sCallbacks.add(callback);
+        sCallbacks.sort(Comparator.comparingInt(Callback::getPriority));
     }
 }

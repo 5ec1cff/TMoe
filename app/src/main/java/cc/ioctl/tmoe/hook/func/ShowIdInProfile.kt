@@ -16,7 +16,7 @@ import de.robv.android.xposed.XposedHelpers
 
 @FunctionHookEntry
 object ShowIdInProfile : CommonDynamicHook(), ProfileActivityRowHook.Callback {
-    private val rowName = "SHOW_ID_IN_PROFILE"
+    val rowName = "SHOW_ID_IN_PROFILE"
 
     override fun initOnce(): Boolean {
         ProfileActivityRowHook.addCallback(this)
@@ -37,7 +37,7 @@ object ShowIdInProfile : CommonDynamicHook(), ProfileActivityRowHook.Callback {
             val isUser = userId != 0L
             val title = if (isUser) LocaleController.getString("UserId", R.string.UserId)
             else LocaleController.getString("GroupOrChannelId", R.string.GroupOrChannelId)
-            XposedHelpers.callMethod(textCell, "setTextAndValue", realId, title, false)
+            XposedHelpers.callMethod(textCell, "setTextAndValue", realId, title, true)
         }
         return true
     }
