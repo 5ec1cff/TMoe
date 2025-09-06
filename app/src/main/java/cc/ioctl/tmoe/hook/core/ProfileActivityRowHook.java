@@ -274,7 +274,15 @@ public class ProfileActivityRowHook implements Initializable {
             for (Field f : kProfileActivity.getDeclaredFields()) {
                 if (f.getType() == int.class && !Modifier.isStatic(f.getModifiers())) {
                     f.setAccessible(true);
-                    if (f.getName().endsWith("Row") || f.getName().endsWith("Row2") || "helpSectionCell".equals(f.getName())) {
+                    // row fields appears in `updateRowsIds`
+                    // you can search `= rowCount++` to find them out
+                    var name = f.getName();
+                    if (name.endsWith("Row")
+                            || name.endsWith("Row2")
+                            || name.endsWith("RowEmpty")
+                            || "helpSectionCell".equals(name)
+                            || (name.startsWith("botPermission") && !name.equals("botPermissionEmojiStatusReqId"))
+                    ) {
                         possibleIds.add(f);
                     }
                 }
