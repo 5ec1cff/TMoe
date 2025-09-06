@@ -68,13 +68,16 @@ object ShowDCInProfile : CommonDynamicHook(), ProfileActivityRowHook.Callback {
         val row = manipulator.getRowIdForKey(ShowIdInProfile.rowName).let { idr ->
             if (idr != -1) idr + 1
             else {
-                manipulator.getRowIdForField("notificationsRow")
-                    .let { nr ->
-                        if (nr != -1) nr
-                        else manipulator.getRowIdForField("infoHeaderRow").let { ihr ->
-                            if (ihr == -1) 1 else ihr + 1
+                manipulator.getRowIdForField("infoStartRow").let { isr ->
+                    if (isr != -1) isr + 1
+                    else manipulator.getRowIdForField("notificationsRow")
+                        .let { nr ->
+                            if (nr != -1) nr
+                            else manipulator.getRowIdForField("infoHeaderRow").let { ihr ->
+                                if (ihr == -1) 1 else ihr + 1
+                            }
                         }
-                    }
+                }
             }
         }
         manipulator.insertRowAtPosition(rowName, row)

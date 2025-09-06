@@ -62,13 +62,16 @@ object ShowIdInProfile : CommonDynamicHook(), ProfileActivityRowHook.Callback {
         manipulator: ProfileActivityRowHook.RowManipulator,
         profileActivity: Any
     ) {
-        val row = manipulator.getRowIdForField("notificationsRow")
-            .let { nr ->
-                if (nr != -1) nr
-                else manipulator.getRowIdForField("infoHeaderRow").let { ihr ->
-                    if (ihr == -1) 1 else ihr + 1
+        val row = manipulator.getRowIdForField("infoStartRow").let { isr ->
+            if (isr != -1) isr + 1
+            else manipulator.getRowIdForField("notificationsRow")
+                .let { nr ->
+                    if (nr != -1) nr
+                    else manipulator.getRowIdForField("infoHeaderRow").let { ihr ->
+                        if (ihr == -1) 1 else ihr + 1
+                    }
                 }
-            }
+        }
         manipulator.insertRowAtPosition(rowName, row)
     }
 
